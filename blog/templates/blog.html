@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Blog</title>
+    </head>
+    <body>        
+        {% for bg in blog %}
+        <div>     
+            <h1>{{bg.title}}</h1>
+            <p>{{bg.content}}</p>        
+        </div>
+        {% endfor %}
+    </body>
+</html>
