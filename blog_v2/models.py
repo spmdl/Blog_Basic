@@ -32,7 +32,7 @@ class Catalog(models.Model):
     class Meta:
         app_label='blog_v2'    
     def __str__(self):
-        return ("{}".format(len(self.tag)))
+        return ("{}".format(self.tag))
     
 # class PostAdmin(admin.ModelAdmin):
 # 	list_display = ('id', 'title') 
