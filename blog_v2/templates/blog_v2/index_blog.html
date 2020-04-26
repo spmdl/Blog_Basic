@@ -39,8 +39,7 @@
                 
               
 <!--               <a href="{% url 'post_tag' post_id=bg.id get_from='post' %}  " style="float:left;text-decoration:none;">{{bg.tag}}</a>  -->
-
-              <a href="{% url 'post_tag' bg.id 'post' %}  " style="float:left;text-decoration:none;">{{bg.tag}}</a> 
+              <a href="{% url 'post_tag' bg.id 'post' %}" style="float:left;text-decoration:none;">{{bg.tag}}</a> 
               <div style="float:right">{{bg.date|date:"Y.m.d"}}</div>  
             </div>
           </div>   
@@ -92,9 +91,7 @@
                     </ul>
                 </div>  
             {% endfor %}
-            
           </div>
-<!--           {% block guestbook%}{% endblock guestbook %} -->
         </div>
       </div>
       <!-- Side Widget -->
