@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <title>留言板</title>
+        <h5 >Leave a Comment:</h5>
+    </head>
+    <body>
+        <form action="" method="post" name="form1"> {% csrf_token %}
+            <label>
+                <span>姓名 :</span>
+                <input id="name" type="text" name="name" placeholder="your name"/>
+                <div ></div>
+            </label>
+
+            <label>
+                <span>信箱 :</span>
+                <input id="email" type="email" value="" name="email" placeholder="your email"/>
+                <div ></div>
+            </label>
+            <label>
+                <span>留言 :</span>
+                <textarea id="message" name="message"  placeholder="請輸入您的建議"></textarea>
+                <div ></div>
+            </label>
+            <div ></div>
+            <label>
+                <span>&nbsp;</span>
+                <input type="submit" value="提交"/>
+            </label>
+            {#避免提交表單時出現CSRF驗證失敗。請求被中斷。的403錯誤#}
+            {% csrf_token %}
+        </form>
+    </body>
+</html>

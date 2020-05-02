@@ -1,0 +1,82 @@
+<div class="card my-4">
+    <h5 class="card-header">Leave a Comment:</h5>
+    <div class="card-body">
+    <form action="" method="post" name="form1" id="guestbook_form"> {% csrf_token %}
+        <span style = "color:red">{{mes}}</span>
+        <div class="form-group">
+            <label><span>姓名 :{{get_commentform.name}}</span></label>
+            <label><span>信箱：{{get_commentform.email}}</span></label>
+        </div>
+        <div class="form-group">
+            <span>留言 :{{get_commentform.text}}</span>
+        </div>
+        <input type="submit" class="btn btn-primary" value="提交" name="send" />
+        <input type="button" class="btn btn-primary" value="提" name="send" id = "pushb" />
+    </form>
+    </div>
+</div>
+<!-- Single Comment -->
+{% for com in comments %}
+
+<!--     <div class='cont'>    
+        <div class='contents'> 
+            <div class='name'>
+                {%if com.name %}
+                    {{com.name}}：</br>
+                {%else%}
+                    匿名：</br>
+                {%endif%}
+            </div>
+            <div class='neir'>
+                <pre>{{ com.text }}</pre>
+            </div>
+            <div class='time'>
+                回复时间：{{com.create_time|date:"Y-m-d"}}
+            </div>
+        </div>
+    </div>  -->
+
+
+
+    <div class="media mb-4" class='con'>              
+        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+        <div class="media-body">            
+            <h5 class="mt-0">{{com.name}}</h5>
+            {{com.text}}
+            <input type="submit" value="回覆" style="border-style:none;color:red;" name="reply" id = "submit" onclick = "replyComment()"/>
+            
+    <p id="msg"></p>
+
+            <input id="id_reply_{{ forloop.counter0 }}" type="hidden" value="{{ com.id}}" name="id_reply_{{ forloop.counter0 }}">
+
+                
+            {% for com_ry in com.comment_reply.all %}
+            <div class="media mb-4">
+                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                <div class="media-body">            
+                        <h5 class="mt-0">{{com_ry.name}}</h5>
+                            {{com_ry.text}}
+                </div>              
+            </div>
+            {% endfor %}            
+        </div>              
+    </div>
+{% endfor %}
+
+<script>
+
+
+    $("#pushb").on("click", function () {
+
+        $.ajax({
+          url:"/post_beta/{{ post_id }}", //别忘了加双引号
+          type:"POST",
+          data:{"id_text":$("#id_text").val()}, //object类型，键值形式的，可以不给键加引号
+          success:function (data) {
+            $("#id_text").val(data);
+          }
+        })
+  })
+</script>
+
+       

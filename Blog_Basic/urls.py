@@ -7,5 +7,6 @@ urlpatterns = [
     path('blog/', include('blog.urls')),
     path('', include('blog_v2.urls')),
     path('blog_v2/', include('blog_v2.urls')),
-    path('guestbook/', include('guestbook.urls')),
+#     path('guestbook/', include('guestbook.urls')),
+    path('guestbook1/', include('guestbook1.urls')),    
 ]
