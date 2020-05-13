@@ -7,6 +7,10 @@ from .forms import CommentForm
 
 import math
 
+from django.views.decorators.csrf import csrf_exempt
+
+import time
+
 def index(request):
     print('index')    
     blog = Post.objects.order_by('-id')
@@ -47,8 +51,73 @@ def post_test(request, post_id):
     return render(request, 'blog_v2/post.html', locals())
 
 
-def check_views(request):
-    print('aa')
+
+@csrf_exempt
+def post_ajax(request, post_id):
+    print("ajax")
+
+    if request.is_ajax():
+        # print('ajax_is'+request.POST.get("id"))
+
+        id_comment = request.POST.get("id")
+        id_name = request.POST.get("id_name")
+        id_text = request.POST.get("id_text")
+        but_name = request.POST.get("but_name")
+        post_id = post_id
+
+        if id_text != "" and id_name != "":
+            if request.POST.get("id_email") == "":
+                id_email = ""
+            else:
+                id_email = request.POST.get("id_email")
+
+            if but_name == 'reply':
+                com = Comment.objects.get(id=id_comment)
+                try:
+                    new_com = Comment_reply.objects.create(name=id_name, email=id_email, text=id_text, comment=com)
+                except:
+                    rel = "fail"
+                else:
+                    rel = "success"
+                daytime = new_com.create_time
+                timeArray = "{}.{:0>2d}.{:0>2d}".format(daytime.year, daytime.month, daytime.day)
+                return JsonResponse({
+                    'rel': rel,
+                    'id': new_com.id,
+                    'text': id_text,
+                    'name': id_name,
+                    'create_time': timeArray,
+                    'button':but_name,
+                    'class_name':"reply" + id_comment
+                }, safe=False)
+
+            else:
+                post = Post.objects.get(id=post_id)
+                counter = post.post_comment.count()
+
+                try:
+                    new_com = Comment.objects.create(name=id_name, email=id_email, text=id_text, post=post)
+                except:
+                    rel = "fail"
+                else:
+                    rel = "success"
+                daytime = new_com.create_time
+                timeArray = "{}.{:0>2d}.{:0>2d}".format(daytime.year, daytime.month, daytime.day)
+                return JsonResponse({
+                    'rel': rel,
+                    'id': new_com.id,
+                    'text': id_text,
+                    'name': id_name,
+                    'create_time': timeArray,
+                    'button': but_name,
+                }, safe=False)
+
+
+        else:
+            rel = "fail"
+    else: rel = "fail"
+
+    return JsonResponse({'rel':rel}, safe=False)
 
 
 
@@ -60,6 +129,7 @@ def post_beta(request, post_id):
     catalog_tag = Catalog.objects.all()
     comments = Post.objects.get(id = post_id).post_comment.all()
     get_commentform = CommentForm()
+    post_id = post_id
     
     print(request.POST.get("id_text"))
 
@@ -79,7 +149,7 @@ def post_beta(request, post_id):
                 if text:
                     post = Post.objects.get(id = post_id)
                     print(post)
-#                     Comment.objects.create(name = name, email = email, text = text, post = post)
+                    Comment.objects.create(name = name, email = email, text = text, post = post)
                 return render(request, 'blog_v2/post_beta.html', locals())
             else:
                 pass

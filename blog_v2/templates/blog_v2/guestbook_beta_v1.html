@@ -1,0 +1,168 @@
+<div class="card my-4">
+    <h5 class="card-header">Leave a Comment:</h5>
+    <div class="card-body">
+    <form action="" method="post" name="form1" id="guestbook_form"> {% csrf_token %}
+        <span style = "color:red">{{mes}}</span>
+        <div class="form-group">
+            <label><span>姓名 :{{get_commentform.name}}</span></label>
+            <label><span>信箱：{{get_commentform.email}}</span></label>
+        </div>
+        <div class="form-group">
+            <span>留言 :{{get_commentform.text}}</span>
+        </div>
+        <input type="button" class="btn btn-primary btn-sm" value="提交" name="send" />
+    </form>
+    </div>
+</div>
+<!-- Single Comment -->
+<div class="guestbook">
+{% for com in comments %}
+    <div class="media mb-4">
+        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+        <div class="media-body" style="word-wrap:break-word;overflow: hidden;">
+
+            <h5 class="mt-0" style="display:inline;">{{com.name}}</h5>
+            <div style="clear: both;float: right;">{{com.create_time|date:"Y.m.d"}}</div>
+
+            <div style="margin:8px 0px;">{{com.text}}</div>
+    <!--                     <input type="hidden" name="comment_id" id="comment_id" value="{{com.id}}"> -->
+            <input type="button" value="回覆" name="reply" id="id_comment{{ forloop.counter0 }}"  username="{{ com.id }}" class="btn btn-outline-secondary btn-sm"/>
+
+            <div class="reply{{ com.id }}">
+                {% for com_ry in com.comment_reply.all %}
+                        <div class="media mt-4">
+                            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                            <div class="media-body" style="word-wrap:break-word;overflow: hidden;">
+                                <h5 class="mt-0" style="display:inline;">{{com_ry.name}}</h5>
+                                <div style="clear: both;float: right;">{{com_ry.create_time|date:"Y.m.d"}}</div>
+
+                                <div style="margin:8px 0px;">{{com_ry.text}}</div>
+
+                            </div>
+                        </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% empty %}
+     <span id="no_comment">暫無評論</span>
+{% endfor %}
+</div>
+{#{% load static %}#}
+{#<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>#}
+{#<script src="/static/vendor/jquery/jquery-3.2.1.min.js"></script>#}
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+
+    var token = $('input[name=csrfmiddlewaretoken]').val();
+
+    $("input[name=reply]").click(function () {
+        {#var id = $(this).attr("username");#}
+        $.ajax({
+            url:"/blog_v2/post_ajax/{{ post_id }}", //記得加雙引號最後也要加斜線
+            type:"POST",
+            data:{
+                "id":$(this).attr("username"),
+                "id_email":$("#id_email").val(),
+                "id_name":$("#id_name").val(),
+                "id_text":$("#id_text").val(),
+                "but_name":$(this).attr("name"),
+                csrfmiddlewaretoken: token,
+            },
+            //success:function 處理後端回傳資料，後續會在這邊處理不重新整理即可顯示新值
+            success:function (data) {
+                if (data.rel == 'success'){
+
+                    console.log('success');
+
+                        $('#guestbook_form')[0].reset(); //表單清空
+
+
+                        if (data.button == 'reply'){
+                            console.log('send');
+                            var class_name = "." + data.class_name
+                            var comment_html =
+
+                                '<div class="media mt-4">' +
+                                    '<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">' +
+                                    '<div class="media-body" style="word-wrap:break-word;overflow: hidden;">' +
+
+                                        '<h5 class="mt-0" style="display:inline;">' + data.name + '</h5>' +
+                                        '<div style="clear: both;float: right;">' + data.create_time + '</div>' +
+                                        '<div style="margin:8px 0px;">' + data.text + '</div>' +
+                                        {#'<input type="button" value="回覆" name="reply" id="id_comment ' + (data.counter +1) + '" />'#}
+                                    '</div>' +
+                                '</div>';
+
+                             $(class_name).prepend(comment_html);
+                        }
+                        $('#no_comment').remove();
+
+
+
+                    {#window.location = '/blog_v2/post_beta/' + data.post_id + '/'#}
+                }
+            },
+
+            error:function() {
+                alert('失败')
+            },
+        })
+
+    });
+
+
+
+    $("input[name=send]").click(function () {
+        {#var id = $(this).attr("username");#}
+        $.ajax({
+            url:"/blog_v2/post_ajax/{{ post_id }}", //記得加雙引號最後也要加斜線
+            type:"POST",
+            data:{
+                "id":$(this).attr("username"),
+                "id_email":$("#id_email").val(),
+                "id_name":$("#id_name").val(),
+                "id_text":$("#id_text").val(),
+                "but_name":$(this).attr("name"),
+                csrfmiddlewaretoken: token,
+            },
+            //success:function 處理後端回傳資料，後續會在這邊處理不重新整理即可顯示新值
+            success:function (data) {
+                    console.log(data);
+                    if (data.rel == 'success'){
+                        console.log('success');
+
+                        $('#guestbook_form')[0].reset(); //表單清空
+
+                        if (data.button == 'send'){
+                            console.log('send');
+                            var comment_html =
+                                '<div class="media mb-4">' +
+                                    '<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">' +
+                                    '<div class="media-body" style="word-wrap:break-word;overflow: hidden;">' +
+
+                                        '<h5 class="mt-0" style="display:inline;">' + data.name + '</h5>' +
+                                        '<div style="clear: both;float: right;">' + data.create_time + '</div>' +
+                                        '<div style="margin:8px 0px;;">' + data.text + '</div>' +
+                                '<input type="button" value="回覆" name="reply" username="'+ data.id +'" class="btn btn-outline-secondary btn-sm">' +
+                                        {#'<input type="button" value="回覆" name="reply" id="id_comment ' + (data.counter +1) + '" />'#}
+                                    '</div>' +
+                                '</div>';
+
+                             $(".guestbook").prepend(comment_html);
+                        }
+                        $('#no_comment').remove();
+                    }
+            },
+
+            error:function(xhr) {
+
+                console.log(xhr);
+            }
+        });
+        return false;
+
+    });
+</script>
+
+       

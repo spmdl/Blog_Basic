@@ -17,27 +17,30 @@
                 <span>留言 :{{get_commentform.text}}</span>
             </div>
 
-            <input type="submit" class="btn btn-primary" value="提交" name="send"/>
+            <input type="submit" class="btn btn-primary" value="提交" name="send" id="send"/>
+{#            <input type="button" value="AJAX提交" id="b1">#}
+{#            <input type="text" id="i3">#}
+
         </div>
         <div class="card-body">
             <!-- Single Comment -->
+
             {% for com in comment %}
             <div class="media mb-4">
                 <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                 <div class="media-body">
-                    
+
                     <h5 class="mt-0">{{com.name}}</h5>
             <!--         <span>{{com.create_time|date:"Y.m.d"}}</span>   -->
                     {{com.text}}
 
 <!--                     <input type="hidden" name="comment_id" id="comment_id" value="{{com.id}}"> -->
 
-                    
 
-                    <input type="submit" value="回覆" style="border-style:none;color:red;" name="reply" onClick="list_Btn()"/>
-                    <input type="hidden" name="id_comment{{ forloop.counter0 }}" id="id_comment{{ com.id }}" value={{com.id}}/>
+                    <input type="button" value="回覆" style="border-style:none;color:red;" name="reply" id="id_comment{{ forloop.counter0 }}"  username="{{ com.id }}"/>
 
-                    {% for com_ry in com.comment_reply_set.all %}
+
+                    {% for com_ry in com.comment_reply.all %}
                             <div class="media mt-4">
                                 <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                                 <div class="media-body">
@@ -47,13 +50,70 @@
                             </div>  
                     {% endfor %}
                 </div>
-
-
             </div>
             {% endfor %}
         </div>
     </form>
 
 </div>
+
+
+<script src="/static/jquery-3.2.1.min.js"></script>
+<script>
+    var token = $('input[name=csrfmiddlewaretoken]').val();
+
+    $('input[id^="id_comment"]').click(function() {
+        var strid =this.id
+        var regexp2 = /[0-9]+/g
+        var comment_id = strid.match(regexp2)
+
+        {#alert("id = " + comment_id + "\n");#}
+    });
+
+    $("input[name=reply]").click(function () {
+        var id = $(this).attr("username");
+
+        $.ajax({
+
+            url:"/guestbook1/ajax/", //記得加雙引號最後也要加斜線
+            type:"POST",
+            data:{
+                "id":$(this).attr("username"),
+                "id_name":$("#id_name").val(),
+                "id_text":$("#id_text").val(),
+                csrfmiddlewaretoken: token,
+            },
+            //success:function 處理後端回傳資料，後續會在這邊處理不重新整理即可顯示新值
+            success:function (data) {
+                if (data == 'success'){
+                    window.location = '/guestbook1/beta/'
+                }
+            },
+            error:function() {
+                alert('失败')
+            },
+        })
+
+    })
+
+
+    $("#b1").on("click", function () {
+
+        $.ajax({
+
+            url:"/guestbook1/ajax/", //别忘了加双引号
+            type:"POST",
+            data:{"id_name":$("#id_name").val(),"id_text":$("#id_text").val()}, //object类型，键值形式的，可以不给键加引号
+            success:function (data) {
+                $("#i3").val(data);
+                alert('yes')
+            },
+            error:function() {
+                alert('失败')
+            },
+        })
+    })
+</script>
+
 
 {% endblock %}
