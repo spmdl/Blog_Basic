@@ -8,14 +8,12 @@
     <!-- Blog Entries Column -->
     <div class="col-md-8">
 
-      <h1 class="my-4">Spm
-        <small>Blog</small>
-      </h1>
+      <h1 class="my-4"></h1>
 
       <!-- Blog Post -->          
       {% for bg in blog %}
 <!--       <a href="post_test/{{ bg.id }}" style="text-decoration:none;color:#000000;">           -->
-      <a href="{% url 'post' bg.id %}" style="text-decoration:none;color:#000000;">  
+      <a href="{% url 'post_beta' bg.id %}" style="text-decoration:none;color:#000000;">
 
           <div class="card mb-4">
             {% if bg.src != None %}            
@@ -36,9 +34,7 @@
             </div>
 
             <div class="card-footer text-muted">  
-                
-              
-<!--               <a href="{% url 'post_tag' post_id=bg.id get_from='post' %}  " style="float:left;text-decoration:none;">{{bg.tag}}</a>  -->
+
               <a href="{% url 'post_tag' bg.id 'post' %}" style="float:left;text-decoration:none;">{{bg.tag}}</a> 
               <div style="float:right">{{bg.date|date:"Y.m.d"}}</div>  
             </div>
@@ -107,7 +103,7 @@
         <h5 class="card-header">Working</h5>
         <div class="card-body">
             
-          <a href="{% url 'post' work.id %}" style="text-decoration:none;">   
+          <a href="{% url 'post_beta' work.id %}" style="text-decoration:none;">
             {{work}}</a>
           </div>
         </div>

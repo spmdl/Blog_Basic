@@ -45,7 +45,13 @@
         </div>
     </div>
 {% empty %}
-     <span id="no_comment">暫無評論</span>
+    <div style = "color:red;text-align: center; display:block;"  id="test">暫無評論</div>
+        <script>
+        setTimeout(function(){document.getElementById("test").style.display="none";},1000);
+        //1000是多久被隐藏，单位毫秒
+        </script>
+
+    </div>
 {% endfor %}
 </div>
 {#{% load static %}#}

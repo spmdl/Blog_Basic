@@ -8,13 +8,13 @@
     <div class="row">
 
       <!-- Post Content Column -->
-      <div class="col-lg-8">
+      <div class="col-lg-8" style="margin:0 auto;max-width:76.666667%;">
         <!-- Title -->
         <h1 class="mt-4">{{bg.title}}</h1>
         <!-- Author -->
         <p class="lead">
             by
-            <a href="#" style="text-decoration:none;">{{bg.tag}}</a>
+            <a href="{% url 'post_tag' bg.id 'post' %}" style="text-decoration:none;">{{bg.tag}}</a>
         </p>
         <hr>
         <!-- Date/Time -->
