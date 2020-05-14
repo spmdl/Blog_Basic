@@ -9,7 +9,9 @@ urlpatterns = [
     path('', views.index, name='index'),
 #     path('post/', views.post),
     path('tag/<int:post_id>/<str:get_from>', views.post_tag, name='post_tag'),
+    path('search/', views.post_search, name='post_search'),
     path('post/<int:post_id>/', views.post_test, name='post'),
+
     path('post_beta/<int:post_id>/<int:postgu_id>/', views.post_beta, name='postgu_beta'),
     
     path('post_beta/<int:post_id>/', views.post_beta, name='post_beta'),

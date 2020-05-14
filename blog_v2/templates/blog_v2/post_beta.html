@@ -41,51 +41,54 @@
     </div>
 
     <!-- Sidebar Widgets Column -->
-    <div class="col-md-4">
-        <!-- Search Widget -->
-        <div class="card my-4">
-            <h5 class="card-header">Search</h5>
-            <div class="card-body">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      &nbsp&nbsp
-                      <button type="button" style='
-                      width: 40px;
-                      height:40px;
-                      background: url("https://img.icons8.com/wired/40/000000/search.png") no-repeat;
-                      border-style: none;'></button>
-                  </div>
-              </div>
-          </div>
-          <!-- Categories Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Catalog</h5>
-            <div class="card-body">
-                <div class="row">
-                    
-                    {% for catalog in catalog_tag %}
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="{% url 'post_tag' catalog.id 'tag'%}" style="text-decoration:none;">{{catalog.tag}}</a>
-<!--                                     <a href="#" style="text-decoration:none;">{{catalog.tag}}</a> -->
-                                </li>
-                            </ul>
-                        </div>  
-                    {% endfor %}
-            </div>
-        </div>
-    </div>
+{#    <div class="col-md-4">#}
+{#        <!-- Search Widget -->#}
+{#        <div class="card my-4">#}
+{#            <h5 class="card-header">Search</h5>#}
+{#            <div class="card-body">#}
+{#                <div class="input-group">#}
+{#                    <input type="text" class="form-control" placeholder="Search for...">#}
+{#                    <span class="input-group-btn"></span>#}
+{#                      &nbsp&nbsp#}
+{#                      <button type="button" style='#}
+{#                      width: 40px;#}
+{#                      height:40px;#}
+{#                      background: url("https://img.icons8.com/wired/40/000000/search.png") no-repeat;#}
+{#                      border-style: none;'></button>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#          <!-- Categories Widget -->#}
+{#          <div class="card my-4">#}
+{#            <h5 class="card-header">Catalog</h5>#}
+{#            <div class="card-body">#}
+{#                <div class="row">#}
+{##}
+{#                    {% for catalog in catalog_tag %}#}
+{#                        <div class="col-lg-6">#}
+{#                            <ul class="list-unstyled mb-0">#}
+{#                                <li>#}
+{#                                    <a href="{% url 'post_tag' catalog.id 'tag'%}" style="text-decoration:none;">{{catalog.tag}}</a>#}
+{#<!--                                     <a href="#" style="text-decoration:none;">{{catalog.tag}}</a> -->#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+
 <!-- {% endfor %} -->
+
     <!-- Side Widget -->
-    <div class="card my-4">
-      <h5 class="card-header">Working</h5>
-      <div class="card-body">
-        <a href="{% url 'post' work.id %}" style="text-decoration:none;">   
-            {{work}}</a>
-        </div>
-    </div>
+{#    <div class="card my-4">#}
+{#      <h5 class="card-header">Working</h5>#}
+{#      <div class="card-body">#}
+{#        <a href="{% url 'post' work.id %}" style="text-decoration:none;">   #}
+{#            {{work}}</a>#}
+{#        </div>#}
+{#    </div>#}
 </div>
 </div>
 <!-- /.row -->

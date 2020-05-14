@@ -62,17 +62,25 @@
       <div class="card my-4">
         <h5 class="card-header">Search</h5>
         <div class="card-body">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
-            <span class="input-group-btn">
-              &nbsp&nbsp
-              <button type="button" style='
-              width: 40px;
-              height:40px;
-              background: url("https://img.icons8.com/wired/40/000000/search.png") no-repeat;
-              border-style: none;'></button>
-            </span>
-          </div>
+
+
+            <form method="post" role="search" id="searchform" action="{% url 'post_search' %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="search" name="search" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">&nbsp&nbsp</span>
+
+                      <button type="submit" style='
+                      width: 40px;
+                      height:40px;
+                      background: url("https://img.icons8.com/wired/40/000000/search.png") no-repeat;
+                      border-style: none;'></button>
+                </div>
+            </form>
+
+
+
+
         </div>
       </div>
 

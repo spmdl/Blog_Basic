@@ -2,14 +2,20 @@ from django.shortcuts import render, redirect
 from blog_v2.models import Post, Catalog, Navbar
 from guestbook1.models import Comment,Comment_reply
 
-from django.http import HttpResponseRedirect, JsonResponse
+
+
+from django.urls import NoReverseMatch, reverse
+
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from .forms import CommentForm
 
 import math
 
+
 from django.views.decorators.csrf import csrf_exempt
 
-import time
+from django.db.models import Q
+
 
 def index(request):
     print('index')    
@@ -32,8 +38,31 @@ def post_tag(request, post_id, get_from):
     catalog = Navbar.objects.all()
     catalog_tag = Catalog.objects.all()
 
-    return render(request, 'blog_v2/index_blog.html', locals())    
-        
+    return render(request, 'blog_v2/index_blog.html', locals())
+
+
+def post_search(request):
+    print('post_search')
+
+    print(request.POST["search"])
+
+
+    if 'search' in request.POST and request.POST["search"] != '':
+        get_search = request.POST.get("search")
+    else:
+        message = 'You submitted an empty form.'
+
+
+
+    blog = Post.objects.filter(Q(title__icontains=get_search) | Q(content__icontains=get_search)).order_by('-id')
+    work = Post.objects.last()
+    catalog = Navbar.objects.all()
+    catalog_tag = Catalog.objects.all()
+
+
+    return render(request, 'blog_v2/index_blog.html', locals())
+    # return redirect('index')
+
 def catalog_tag(request, catalog_id):
     print('catalog_tag')
     tag_id = Catalog.objects.get(id = catalog_id)
@@ -118,6 +147,9 @@ def post_ajax(request, post_id):
     else: rel = "fail"
 
     return JsonResponse({'rel':rel}, safe=False)
+
+
+
 
 
 
