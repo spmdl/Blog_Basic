@@ -4,26 +4,45 @@ from guestbook1.models import Comment,Comment_reply
 
 
 
-from django.urls import NoReverseMatch, reverse
-
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from .forms import CommentForm
 
-import math
-
-
 from django.views.decorators.csrf import csrf_exempt
-
 from django.db.models import Q
+
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.contrib import auth
+from django.contrib import messages
 
 
 def index(request):
-    print('index')    
+    print('index')
+
+    # if request.session['request']:
+    #     blog = request.session['request']
+    # else:
+    #     blog = Post.objects.order_by('-id')
     blog = Post.objects.order_by('-id')
     work = Post.objects.last()
     catalog = Navbar.objects.all()
     catalog_tag = Catalog.objects.all()
+    search_input = "Search for..."
     return render(request, 'blog_v2/index_blog.html', locals())
+
+
+def sig(request):
+
+    if request.POST:
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+
+
+        return render(request, 'blog_v2/index_blog.html', locals())
+    else:
+        return render(request, 'blog_v2/signup.html', locals())
+
 
 def post_tag(request, post_id, get_from):
     print('post_tag')
@@ -52,15 +71,33 @@ def post_search(request):
     else:
         message = 'You submitted an empty form.'
 
+    post_search = Post.objects.filter(Q(title__icontains=get_search) | Q(content__icontains=get_search)).order_by('-id')
+
+    if post_search:
+        blog = post_search
+        work = Post.objects.last()
+        catalog = Navbar.objects.all()
+        catalog_tag = Catalog.objects.all()
+
+        search_input = "Search for..."
+
+        return render(request, 'blog_v2/index_blog.html', locals())
+    else:
+
+        # request.session['request'] = request
+        # return redirect('/', locals())
+
+        blog = Post.objects.order_by('-id')
+        work = Post.objects.last()
+        catalog = Navbar.objects.all()
+        catalog_tag = Catalog.objects.all()
+        search_input = "搜尋不到"
+        return render(request, 'blog_v2/index_blog.html', locals())
 
 
-    blog = Post.objects.filter(Q(title__icontains=get_search) | Q(content__icontains=get_search)).order_by('-id')
-    work = Post.objects.last()
-    catalog = Navbar.objects.all()
-    catalog_tag = Catalog.objects.all()
 
 
-    return render(request, 'blog_v2/index_blog.html', locals())
+    # return redirect('/', locals())
     # return redirect('index')
 
 def catalog_tag(request, catalog_id):

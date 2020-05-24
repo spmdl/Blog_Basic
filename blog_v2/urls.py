@@ -16,6 +16,8 @@ urlpatterns = [
     
     path('post_beta/<int:post_id>/', views.post_beta, name='post_beta'),
     path('post_ajax/<int:post_id>', views.post_ajax, name='post_ajax'),
+    path('sig/', views.sig, name='sig'),
+    path('signup/', include('signup.urls')),
 
 #     path('gu', views.guestbook),
     re_path('media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT})

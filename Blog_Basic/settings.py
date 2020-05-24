@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'blog',
     'blog_v2',
 #     'guestbook',
-    'guestbook1',    
+    'guestbook1',
+    'signup',
 ]
 
 MIDDLEWARE = [

@@ -63,7 +63,7 @@
             <form method="post" role="search" id="searchform" action="{% url 'post_search' %}">
                 {% csrf_token %}
                 <div class="input-group">
-                    <input type="search" name="search" class="form-control" placeholder="Search for...">
+                    <input type="search" name="search" class="form-control" placeholder={{ search_input }}>
                     <span class="input-group-btn">&nbsp&nbsp</span>
 
                       <button type="submit" style='

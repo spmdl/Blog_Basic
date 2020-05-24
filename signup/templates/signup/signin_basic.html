@@ -1,0 +1,21 @@
+{% extends 'blog_v2/index_blog.html' %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+{% block content %}
+
+<div class="container">
+  <div class="row">
+        <div class="container main-container">
+            <h2 class="form-signin-heading">登入帳號</h2>
+            <form class="form-signin" action="{% url 'signin' %}" method="POST">
+                {% csrf_token %}
+                <label for="Username" class="sr-only">Username</label>
+                <input type="text" id="Username" class="form-control" placeholder="Username" name="username" required autofocus>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Password" name="password" required>
+                <hr>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">登入</button>
+          </form>
+        </div> <!-- /container -->
+  </div>
+</div>
+{% endblock %}
